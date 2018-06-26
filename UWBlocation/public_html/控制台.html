@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+
+
+<head>
+
+    <link rel="icon" href="./logo.png" >
+    
+<meta charset="UTF-8" />
+<title>UWB-Guaed</title>
+<link rel="profile" href="http://gmpg.org/xfn/11" />
+<link rel="stylesheet" href="http://joeyrabbitt.com/blog/wp-content/themes/jrblog/style.css" type="text/css" media="screen" />
+<!--[if IE]><link rel="stylesheet" href="/ie.css" type="text/css" media="screen" /><![endif]-->
+
+
+<style>
+body{ text-align:center;  background-image: url(./back.png)}
+
+</style>
+
+<script>
+function login()
+{
+	if(document.getElementById("userName").value=="admin" && document.getElementById("password").value=="admin"){
+		window.alert("login");
+		window.location.href="./Dashboard.html";
+	}
+	else{
+		window.alert("Login failed");
+	}
+
+}
+</script>
+
+</head>
+
+<body class="home blog">
+<div id="fb-root"></div>
+<script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script>
+	<div id="container" class="blogInner">
+				
+
+		</div>
+
+
+<div id="input">
+<br><br><br><br><br><br>
+<form action="action_page.php">
+<font color="#FFFFFF">Username:</font>
+<input id ="userName" type="text" name="username" value="">
+<br>
+<font color="#FFFFFF">Pass word:&nbsp;</font>
+<input id = "password" type="text" name="passkey" value="">
+<br><br>
+</form> 
+</div>
+<button onclick="login()">login</button>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
+    <header class="top">
+	    <div class="frame clearfix">
+	        <h2><a href="./UWB.html">UWB Location</a></h2>
+		    <nav class="full"><ul class="clearfix">
+    <li class="link1 "><a href="./产品介绍.html" title="产品介绍">产品介绍</a></li>
+    <li class="link2 selected"><a href="./控制台.html" title="控制台">控制台</a></li>
+    <li class="link3"><a href="./成员介绍.html" title="成员介绍">成员介绍</a></li>
+</ul>
+</nav>
+		    <nav class="mobile">
+		    	<a href="#" class="menuToggle" id="topnav"></a>
+		    	<ul class="clearfix">
+    <li class="link1 selected"><a href="./产品介绍.html" title="产品介绍">产品介绍</a></li>
+    <li class="link2"><a href="./控制台.html" title="控制台">控制台</a></li>
+    <li class="link3"><a href="./成员介绍.html" title="成员介绍">成员介绍</a></li>
+</ul>
+		    </nav>
+	    </div>
+    </header>
+	<footer class="global blog">
+	    <div class="frame full clearfix">
+		    <nav><ul class="clearfix">
+    <li class="link1 selected"><a href="./产品介绍.html" title="产品介绍">产品介绍</a></li>
+    <li class="link2"><a href="./控制台.html" title="控制台">控制台</a></li>
+    <li class="link3"><a href="./成员介绍.html" title="成员介绍">成员介绍</a></li>
+</ul>
+</nav>
+		    <ul class="clearfix ext">
+    <li class="link1"><a href="./" target="_blank">Dribbble</a></li>
+    <li class="link2"><a href="./" target="_blank">Twitter</a></li>
+    <li class="link3"><a href="./" target="_blank">LinkedIn</a></li>
+</ul>	    </div>
+	    <div class="frame mobile clearfix">
+		    <a href="#container">Back to top</a>
+	    </div>
+	</footer>
+</div>
+
+	
+	</div>
+
+         
+
+</body>
+</html>

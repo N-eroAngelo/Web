@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <meta charset="UTF-8">  
+	   <title>菜鸟教程(runoob.com)</title> 
+      <script type="text/javascript">
+      
+         var db = openDatabase('LOGS', '1.0', 'Test DB', 2 * 1024 * 1024);
+         var msg;
+         
+         db.transaction(function (tx) {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id, log)');
+            tx.executeSql('INSERT INTO LOGS (id, log) VALUES (00001, "菜鸟教程")');
+            tx.executeSql('INSERT INTO LOGS (id, log) VALUES (00002, "www.runoob.com")');
+            msg = '<p>数据表已创建，且插入了两条数据。</p>';
+            document.querySelector('#status').innerHTML =  msg;
+         });
+
+         db.transaction(function (tx) {
+              tx.executeSql('DELETE FROM LOGS  WHERE id=0000');
+              msg = '<p>删除 id 为 1 的记录。</p>';
+              document.querySelector('#status').innerHTML =  msg;
+         });
+
+
+
+
+         
+      </script>
+      
+   </head>
+   
+   <body>
+      <div id="status" name="status">状态信息</div>
+   </body>
+   
+</html>

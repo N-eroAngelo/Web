@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <title>Example 03.01 - Ambient Light</title>
+    <script type="text/javascript" src="./js/three.js"></script>
+    <script type="text/javascript" src="./js/OBJLoader.js"></script>
+    <script type="text/javascript" src="./js/MTLLoader.js"></script>
+    <script type="text/javascript" src="./js/OBJMTLLoader.js"></script>
+    <script type="text/javascript" src="./js/jquery-1.9.0.js"></script>
+    <script type="text/javascript" src="./js/Detector.js"></script>
+    <script type="text/javascript" src="./js/OrbitControls.js"></script>
+<script>
+
+    var car1=new THREE.Object3D;
+    var car2=new THREE.Object3D;
+    var car3=new THREE.Object3D;
+    var speed=20;
+    var car1re=0;
+    var car2re=0;
+    var car3re=0;
+    var positionbox=401;
+    </script>
+</head>
+<body>
+
+
+<!-- Div which will hold the Output -->
+<div id="WebGL-output">
+</div>
+
+<script type="text/javascript">
+	var windowHalfX = window.innerWidth / 2;
+	var windowHalfY = window.innerHeight / 2;
+        // create a scene, that will hold all our elements such as objects, cameras and lights.
+        var scene = new THREE.Scene();
+		
+		
+        // create a camera, which defines where we're looking at.
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000000);
+		
+		
+		// SKYBOX
+  
+			mesh1 = new THREE.Mesh(new THREE.CubeGeometry(60, 100, 100),
+            new THREE.MeshBasicMaterial({
+                color: 0xccdaa7d
+            })
+    );
+			scene.add( mesh1);
+                        var    boxX="-10";
+                        var    boxY="25";
+                        var    boxZ="17";
+                        
+
+                        
+
+        // create a render and set the size
+        var renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+        renderer.setClearColor(0xffffff, 1.0);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMapEnabled = true;
+
+		
+	//添加坐标轴
+
+		
+
+        // 创建一个平面
+
+		
+		//添加模型
+
+                        
+        var mesh;
+ 
+var onProgress = function ( xhr ) {  
+        if ( xhr.lengthComputable ) {  
+            var percentComplete = xhr.loaded / xhr.total * 100;
+                    }  
+                };  
+  
+var onError = function ( xhr ) { };  
+
+
+
+var mtlLoader = new THREE.MTLLoader();  
+    mtlLoader.setBaseUrl( './js/' );  
+    mtlLoader.setPath( './js/' );  
+    mtlLoader.load( '仓库无缩放.mtl', function( materials ) {  
+    materials.preload();  
+var objLoader = new THREE.OBJLoader();  
+    objLoader.setMaterials( materials );  
+    objLoader.setPath( './js/' );  
+    objLoader.load( '仓库无缩放.obj', function ( object ) {  
+        scene.add( object );
+        }, onProgress, onError );  
+  });  
+
+
+
+
+
+            //加载小车
+var car1mtl = new THREE.MTLLoader();  
+    car1mtl.setBaseUrl( './js/' );  
+    car1mtl.setPath( './js/' );  
+    car1mtl.load( 'car1.mtl', function( materials ) {  
+    materials.preload();  
+var car1obj = new THREE.OBJLoader();  
+    car1obj.setMaterials( materials );  
+    car1obj.setPath( './js/' );
+    car1obj.load( 'car1.obj',  function ( object ) {  
+        car1=object;
+        scene.add( car1 );
+
+        }, onProgress, onError );
+    });
+var car2mtl = new THREE.MTLLoader();  
+    car2mtl.setBaseUrl( './js/' );  
+    car2mtl.setPath( './js/' );  
+    car2mtl.load( 'car2.mtl', function( materials ) {  
+    materials.preload();  
+var car2obj = new THREE.OBJLoader();  
+    car2obj.setMaterials( materials );  
+    car2obj.setPath( './js/' );
+    car2obj.load( 'car2.obj',  function ( object ) {  
+        car2=object;
+        scene.add( car2 );
+
+        }, onProgress, onError );
+    });
+    var car1mt3 = new THREE.MTLLoader();  
+    car1mt3.setBaseUrl( './js/' );  
+    car1mt3.setPath( './js/' );  
+    car1mt3.load( 'car3.mtl', function( materials ) {  
+    materials.preload();  
+var car3obj = new THREE.OBJLoader();  
+    car3obj.setMaterials( materials );  
+    car3obj.setPath( './js/' );
+    car3obj.load( 'car3.obj',  function ( object ) {  
+        car3=object;
+        scene.add( car3 );
+
+        }, onProgress, onError );
+    });
+
+
+
+
+
+
+        // 相机在场景中的位置和指向
+        camera.position.x = -3000;
+        camera.position.y = 4000;
+        camera.position.z = 2500;
+        camera.lookAt(new THREE.Vector3(0, 0, 1000));
+		
+	//添加控制
+	var orbitControls = new THREE.OrbitControls(camera);
+
+        // 增加外界环境光照
+        var ambiColor = "#8b8a87";
+        var ambientLight = new THREE.AmbientLight(ambiColor);
+        scene.add(ambientLight);
+
+        // 为了增加阴影添加一个点光源
+        var spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.position.set(-4000, 6000, -1000);
+        spotLight.castShadow = true;
+        scene.add(spotLight);
+
+        // add the output of the renderer to the html element
+        $("#WebGL-output").append(renderer.domElement);
+
+        // call the render function
+        var step = 0;
+
+
+		//监听窗口时间使其自适应
+		window.addEventListener( 'resize', onWindowResize, false );
+		window.addEventListener( 'mousemove', onDocumentMouseMove, false );
+		
+        function render() {
+            requestAnimationFrame(render);
+            renderer.render(scene, camera);
+        } 
+		//窗口监听事件
+	function onWindowResize( event ) {
+			SCREEN_WIDTH = window.innerWidth;
+			SCREEN_HEIGHT = window.innerHeight;
+			renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+			camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+			camera.updateProjectionMatrix();
+
+
+        }
+		//鼠标监听事件
+        function onDocumentMouseMove(event) {
+			mouseX = ( event.clientX - windowHalfX );
+			mouseY = ( event.clientY - windowHalfY );
+	}
+    function movebox(){
+     /*   $.ajax({
+                        type: "get",
+                        url: "./data/x.txt",
+                        dataType: "text",
+                        async: true
+                    }).done(function (data) {
+                        boxX=(data.replace()*100-120)*12+950;//替换回车行成换行符
+                        //console.log(data.replace(/\r\n/ig,'</br>'));
+                    });
+                    $.ajax({
+                        type: "get",
+                        url: "./data/y.txt",
+                        dataType: "text",
+                        async: true
+                    }).done(function (data) {
+                        boxY=data.replace();//替换回车行成换行符
+                        //console.log(data.replace(/\r\n/ig,'</br>'));
+                    });
+                   $.ajax({
+                        type: "get",
+                        url: "./data/z.txt",
+                        dataType: "text",
+                        async: true
+                    }).done(function (data) {
+                        boxZ=data.replace();//替换回车行成换行符
+                        //console.log(data.replace(/\r\n/ig,'</br>'));
+                    });
+             $.ajax({
+                        type: "get",
+                        url: "./data/position.txt",
+                        dataType: "text",
+                        async: true
+                    }).done(function (data) {
+                        positionbox=(data.replace()-400)*12+950;//替换回车行成换行符
+                        //console.log(data.replace(/\r\n/ig,'</br>'));
+                    });*/
+             
+        //positionBox();
+
+        //chage();
+        mesh1.position.set(boxX,boxZ,boxY);
+        car1.position.set(car1x,car1z,car1y);
+        car2.position.set(car2x,car2z,car2y);
+        car3.position.set(car3x,car3z,car3y);
+
+        
+        
+        setTimeout("movebox()",15);
+    }     
+    
+    
+    
+    
+    
+    function positionBox(){
+        if(positionbox==401){
+            boxY=-550;
+            boxX=950;
+            boxZ=610;
+        }
+        if(positionbox==402){
+            boxY=-550;
+            boxX=1038;
+            boxZ=610;
+        }
+                if(positionbox==403){
+            boxY=-550;
+            boxX=1126;
+            boxZ=610;
+        }
+                if(positionbox==404){
+            boxY=-550;
+            boxX=1214;
+            boxZ=610;
+        }
+                if(positionbox==405){
+            boxY=-550;
+            boxX=1302;
+            boxZ=610;
+        }
+                if(positionbox==406){
+            boxY=-550;
+            boxX=1390;
+            boxZ=610;
+        }
+                if(positionbox==407){
+            boxY=-550;
+            boxX=1478;
+            boxZ=610;
+        }
+                if(positionbox==408){
+            boxY=-550;
+            boxX=1566;
+            boxZ=610;
+        }
+                if(positionbox==409){
+            boxY=-550;
+            boxX=1654;
+            boxZ=610;
+        }        if(positionbox==410){
+            boxY=-550;
+            boxX=1742;
+            boxZ=610;
+        }
+        
+    }
+    
+    
+    
+    
+    function chage(){
+         carNo();
+    }
+    function init (){
+        car1x=-200;car1y=1500;car1z=0;
+        car2x=1000;car2y=1500;car2z=0;
+        car3x=2000;car3y=1500;car3z=0;
+    }
+    
+
+    //货架一层高250，二层420，三层610；
+    //货架一排y=-550，二排-1500
+    //货架一列x为-150到400，二列为1050到1600，三列为2250到2800
+    //小车都绕道
+    function add(i){
+        return i+25;
+    }
+
+
+function carNo(){
+    if(boxZ>200&boxZ<=350){//一层
+        takecar1();
+    }
+    if(boxZ>350&boxZ<=570){//二层
+        takecar2();      
+    }
+    if(boxZ>570&boxZ<650){//三层
+        takecar3();  
+    }
+    
+}
+
+
+    function takecar1(){
+        if(car1re==0){
+            if(car1y>50){
+               car1y=car1y-speed;
+            }else{
+                if(car1x<boxX){
+                    car1.rotation.y=3.1415926*1.5;
+                    car1x=car1x+speed;
+                    if(car1>boxX) {
+                        car1.rotation.y=0;
+                        car1re=1;
+                    }
+                }else{
+                    car1.rotation.y=3.1415926*0.5;
+                    car1x=car1x-speed;
+                    if(car1<boxX) {
+                        car1.rotation.y=0;                        
+                        car1re=1;
+                    }
+                }
+            }
+        }
+        if(car1re==1){
+            if((car1y-130)>boxY){
+                car1y=car1y-speed;
+            }else{
+                car1re=2;
+                car1x=boxX;
+            }
+        }
+        if(car1re==2){
+            car1y=parseInt(boxY)+100;
+            if(car1y>0){
+                car1re=3;
+                
+            }
+        }
+        if(car1re==3){
+
+            car1.rotation.y=Math.PI;
+            car1y=parseInt(boxY)-100;
+        }
+    }
+        function takecar2(){
+        if(car2re==0){
+            if(car2y>50){
+               car2y=car2y-speed;
+            }else{
+                if(car2x<boxX){
+                    car2.rotation.y=3.1415926*1.5;
+                    car2x=car2x+speed;
+                    if(car2>boxX) {
+                        car2.rotation.y=0;
+                        car2re=1;
+                    }
+                }else{
+                    car2.rotation.y=3.1415926*0.5;
+                    car2x=car2x-speed;
+                    if(car2<boxX) {
+                        car2.rotation.y=0;                        
+                        car2re=1;
+                    }
+                }
+            }
+        }
+        if(car2re==1){
+            if((car2y-130)>boxY){
+                car2y=car2y-speed;
+            }else{
+                car2re=2;
+                car2x=boxX;
+            }
+        }
+        if(car2re==2){
+            car2y=parseInt(boxY)+100;
+            if(car2y>0){
+                car2re=3;
+                
+            }
+        }
+        if(car2re==3){
+
+            car2.rotation.y=Math.PI;
+            car2y=parseInt(boxY)-100;
+        }
+    }
+        function takecar3(){
+
+        if(car3re==0){
+            if(car3y>50){
+               car3y=car3y-speed;
+            }else{
+                if(car3x<boxX){
+                    car3.rotation.y=3.1415926*1.5;
+                    car3x=car3x+speed;
+                    if(car3>boxX) {
+                        car3.rotation.y=0;
+                        car3re=1;
+                    }
+                }else{
+                    car3.rotation.y=3.1415926*0.5;
+                    car3x=car3x-speed;
+                    if(car3<boxX) {
+                        car3.rotation.y=0;                        
+                        car3re=1;
+                    }
+                }
+            }
+        }
+        if(car3re==1){
+            if((car3y-130)>boxY){
+                car3y=car3y-speed;
+            }else{
+                car3re=2;
+                car3x=boxX;
+            }
+        }
+        if(car3re==2){
+            car3y=parseInt(boxY)+100;
+            if(car3y>0){
+                car3re=3;
+                
+            }
+        }
+        if(car3re==3){
+            car3.rotation.y=Math.PI;
+            car3y=parseInt(boxY)-100;
+        }
+    }
+    
+    
+    
+    
+    
+
+
+init();
+render();
+        boxZ="610";
+        boxY="-550";
+        boxX="1000";
+setTimeout(movebox(),2000);
+
+
+
+
+</script>
+
+</body>
+</html>

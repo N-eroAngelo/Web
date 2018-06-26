@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <title>Example 03.01 - Ambient Light</title>
+    <script type="text/javascript" src="./js/three.js"></script>
+    <script type="text/javascript" src="./js/OBJLoader.js"></script>
+    <script type="text/javascript" src="./js/MTLLoader.js"></script>
+    <script type="text/javascript" src="./js/OBJMTLLoader.js"></script>
+    <script type="text/javascript" src="./js/jquery-1.9.0.js"></script>
+    <script type="text/javascript" src="./js/Detector.js"></script>
+    <script type="text/javascript" src="./js/OrbitControls.js"></script>
+
+</head>
+<body>
+
+
+<!-- Div which will hold the Output -->
+<div id="WebGL-output">
+</div>
+
+<script type="text/javascript">
+
+
+        // create a scene, that will hold all our elements such as objects, cameras and lights.
+        var scene = new THREE.Scene();
+		
+		
+        // create a camera, which defines where we're looking at.
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000000);
+		
+		
+		// SKYBOX
+
+		var textureCube;
+
+
+				var r = "./cube/";
+				var urls = [ r + "px.png", r + "nx.png",
+							 r + "py.png", r + "ny.png",
+							 r + "pz.png", r + "nz.png" ];
+			textureCube = THREE.ImageUtils.loadTextureCube( urls );
+
+				var shader = THREE.ShaderLib[ "cube" ];
+				shader.uniforms[ "tCube" ].value = textureCube;
+	
+
+			mesh1 = new THREE.Mesh( new THREE.BoxGeometry( 7, 5  , 5));
+			scene.add( mesh1);
+                        var    boxX="-10";
+                        var    boxY="25";
+                        var    boxZ="17";
+                        
+
+                        
+
+        // create a render and set the size
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setClearColor(0xffffff, 1.0);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMapEnabled = true;
+		
+		
+		
+		
+		
+		
+	//添加坐标轴
+
+		
+
+        // 创建一个平面
+        var planeGeometry = new THREE.PlaneGeometry(200,200, 1, 1);
+        var planeMaterial = new THREE.MeshLambertMaterial({color: 0xededed});
+        var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.receiveShadow = true;
+
+        // rotate and position the plane
+        plane.rotation.x = -0.5 * Math.PI;
+        plane.position.x = 0
+        plane.position.y = 0
+        plane.position.z = 0
+        scene.add(plane);
+		
+		
+
+		
+		
+		
+		//添加模型
+
+        	
+                        
+                        
+
+  
+var onProgress = function ( xhr ) {  
+        if ( xhr.lengthComputable ) {  
+            var percentComplete = xhr.loaded / xhr.total * 100;  
+                    }  
+                };  
+  
+var onError = function ( xhr ) { };  
+
+
+
+var mtlLoader = new THREE.MTLLoader();  
+    mtlLoader.setBaseUrl( './obj/' );  
+    mtlLoader.setPath( './obj/' );  
+    mtlLoader.load( 'asd.mtl', function( materials ) {  
+    materials.preload();  
+  
+var objLoader = new THREE.OBJLoader();  
+    objLoader.setMaterials( materials );  
+    objLoader.setPath( './obj/' );  
+    objLoader.load( '仓库无缩放.obj', function ( object ) {  
+        scene.add( object );  
+        }, onProgress, onError );  
+  
+  });  
+
+
+
+
+        // 相机在场景中的位置和指向
+        camera.position.x = -25;
+        camera.position.y = 40;
+        camera.position.z = 25;
+        camera.lookAt(new THREE.Vector3(10, 0, 0));
+		
+		//添加控制
+		var orbitControls = new THREE.OrbitControls(camera);
+
+
+		
+        // 增加外界环境光照
+        var ambiColor = "#8b8a87";
+        var ambientLight = new THREE.AmbientLight(ambiColor);
+        scene.add(ambientLight);
+
+        // 为了增加阴影添加一个点光源
+        var spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.position.set(-40, 60, -10);
+        spotLight.castShadow = true;
+        scene.add(spotLight);
+
+        // add the output of the renderer to the html element
+        $("#WebGL-output").append(renderer.domElement);
+
+
+
+
+
+        // call the render function
+        var step = 0;
+
+        render();
+	
+		//监听窗口时间使其自适应
+		window.addEventListener( 'resize', onWindowResize, false );
+		window.addEventListener( 'mousemove', onDocumentMouseMove, false );
+		
+        function render() {
+
+            
+            
+            mesh1.position.x=boxX;
+            mesh1.position.y=boxZ;
+            mesh1.position.z=boxY;
+            
+            requestAnimationFrame(render);
+            renderer.render(scene, camera);
+        } 
+		
+
+		
+		
+		//窗口监听事件
+		function onWindowResize( event ) {
+			SCREEN_WIDTH = window.innerWidth;
+			SCREEN_HEIGHT = window.innerHeight;
+			renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+			camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+			camera.updateProjectionMatrix();
+			cameraCube.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+			cameraCube.updateProjectionMatrix();
+
+		}
+		//鼠标监听事件
+		function onDocumentMouseMove(event) {
+			mouseX = ( event.clientX - windowHalfX );
+			mouseY = ( event.clientY - windowHalfY );
+		}
+
+function movebox(){
+
+                    $.ajax({
+                        type: "get",
+                        url: "./data/x.txt",
+                        dataType: "text",
+                        async: true
+                    }).done(function (data) {
+                        boxX=data.replace()*25-37.5;//替换回车行成换行符
+                        //console.log(data.replace(/\r\n/ig,'</br>'));
+                    });
+                    $.ajax({
+                        type: "get",
+                        url: "./data/y.txt",
+                        dataType: "text",
+                        async: true
+                    }).done(function (data) {
+                        boxY=data.replace()*(-18.75)+72.5;//替换回车行成换行符
+                        //console.log(data.replace(/\r\n/ig,'</br>'));
+                    });
+        /*            $.ajax({
+                        type: "get",
+                        url: "./data/z.txt",
+                        dataType: "text",
+                        async: true
+                    }).done(function (data) {
+                        boxZ=data.replace();//替换回车行成换行符
+                        //console.log(data.replace(/\r\n/ig,'</br>'));
+                    });*/
+                    
+                    boxZ=42;
+    
+    mesh1.position.set(boxX,boxZ,boxY);
+    
+
+    setTimeout("movebox()",140);
+}
+
+movebox();
+
+</script>
+
+</body>
+</html>

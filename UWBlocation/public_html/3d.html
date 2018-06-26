@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+    <title>Example 03.01 - Ambient Light</title>
+    <script type="text/javascript" src="./js/three.js"></script>
+    <script type="text/javascript" src="./js/OBJLoader.js"></script>
+    <script type="text/javascript" src="./js/MTLLoader.js"></script>
+    <script type="text/javascript" src="./js/OBJMTLLoader.js"></script>
+    <script type="text/javascript" src="./js/jquery-1.9.0.js"></script>
+    <script type="text/javascript" src="./js/Detector.js"></script>
+    <script type="text/javascript" src="./js/OrbitControls.js"></script>
+
+    <style>
+        
+			body {
+				background:#fff;
+				color:#fff;
+				padding:0;
+				margin:0;
+				overflow:hidden;
+				font-family:monospace;
+				font-size:13px;
+				text-align:center;
+			}
+
+			a { color:skyblue }
+
+			#info {
+				position: absolute;
+				top: 0px; width: 100%;
+				color: #fff;
+				background:rgba(0,0,0,0.65);
+				padding: 5px;
+				text-align: center;
+				z-index:100;
+				display:block;
+			}
+
+
+    </style>
+</head>
+<body>
+
+
+<!-- Div which will hold the Output -->
+<div id="WebGL-output">
+</div>
+
+<script type="text/javascript">
+var car1x=car2x=car3x=car1y=car2y=car3y=car1z=car2z=car3z=0;
+
+        // create a scene, that will hold all our elements such as objects, cameras and lights.
+        var scene = new THREE.Scene();
+		
+		
+        // create a camera, which defines where we're looking at.
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000000);
+		
+		
+		// SKYBOX
+
+		var textureCube;
+
+
+				var r = "./cube/";
+				var urls = [ r + "px.png", r + "nx.png",
+							 r + "py.png", r + "ny.png",
+							 r + "pz.png", r + "nz.png" ];
+			textureCube = THREE.ImageUtils.loadTextureCube( urls );
+
+				var shader = THREE.ShaderLib[ "cube" ];
+				shader.uniforms[ "tCube" ].value = textureCube;
+	
+
+			mesh1 = new THREE.Mesh( new THREE.BoxGeometry( 7, 5  , 5));
+			scene.add( mesh1);
+                        var    boxX="-10";
+                        var    boxY="25";
+                        var    boxZ="17";
+                        
+
+                        
+
+        // create a render and set the size
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setClearColor(0xffffff, 1.0);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMapEnabled = true;
+		
+		
+		
+		
+		
+		
+	//添加坐标轴
+
+		
+
+        // 创建一个平面
+
+
+ 
+		
+		
+
+		
+		
+		
+		//添加模型
+
+        	
+                        
+                        
+        var mesh;
+ 
+var onProgress = function ( xhr ) {  
+        if ( xhr.lengthComputable ) {  
+            var percentComplete = xhr.loaded / xhr.total * 100;  
+                    }  
+                };  
+  
+var onError = function ( xhr ) { };  
+
+
+
+var mtlLoader = new THREE.MTLLoader();  
+    mtlLoader.setBaseUrl( './obj/' );  
+    mtlLoader.setPath( './obj/' );  
+    mtlLoader.load( '仓库无缩放.mtl', function( materials ) {  
+    materials.preload();  
+  
+var objLoader = new THREE.OBJLoader();  
+    objLoader.setMaterials( materials );  
+    objLoader.setPath( './obj/' );  
+    objLoader.load( '仓库无缩放.obj', function ( object ) {  
+        scene.add( object );
+
+        }, onProgress, onError );  
+  });  
+
+            //加载小车
+var car1mtl = new THREE.MTLLoader();  
+    car1mtl.setBaseUrl( './obj/' );  
+    car1mtl.setPath( './obj/' );  
+    car1mtl.load( 'car1.mtl', function( materials ) {  
+    materials.preload();  
+var car1obj = new THREE.OBJLoader();  
+    car1obj.setMaterials( materials );  
+    car1obj.setPath( './obj/' );
+    car1obj.load( 'car1.obj', function ( object ) {  
+        car1=object;
+        scene.add( car1 );
+        car1.position.set(car1x,car1y,car1z);
+        car1.rotation.y=car1r;
+        
+        }, onProgress, onError );
+});
+
+var car2mtl = new THREE.MTLLoader();  
+    car2mtl.setBaseUrl( './obj/' );  
+    car2mtl.setPath( './obj/' );  
+    car2mtl.load( 'car2.mtl', function( materials ) {  
+    materials.preload();  
+var car2obj = new THREE.OBJLoader();  
+    car2obj.setMaterials( materials );  
+    car2obj.setPath( './obj/' );  
+    car2obj.load( 'car2.obj', function ( object ) {  
+        car2=object;
+        scene.add( car2 );  
+           car2.position.set(car2x,car2y,car2z);
+           car2.rotation.y=car2r;
+        }, onProgress, onError );  
+  });
+  
+var car3mtl = new THREE.MTLLoader();  
+    car3mtl.setBaseUrl( './obj/' );  
+    car3mtl.setPath( './obj/' );  
+    car3mtl.load( 'car3.mtl', function( materials ) {  
+    materials.preload();  
+var car3obj = new THREE.OBJLoader();  
+    car3obj.setMaterials( materials );  
+    car3obj.setPath( './obj/' );  
+    car3obj.load( 'car3.obj', function ( object ) {  
+        car3=object;
+        scene.add( car3 );  
+           car3.position.set(car3x,car3y,car3z);
+           car3.rotation.y=car3r;
+        }, onProgress, onError );  
+  });
+
+
+
+        // 相机在场景中的位置和指向
+        camera.position.x = -3000;
+        camera.position.y = 4000;
+        camera.position.z = 2500;
+        camera.lookAt(new THREE.Vector3(1000, 0, 0));
+		
+		//添加控制
+		var orbitControls = new THREE.OrbitControls(camera);
+
+        // 增加外界环境光照
+        var ambiColor = "#8b8a87";
+        var ambientLight = new THREE.AmbientLight(ambiColor);
+        scene.add(ambientLight);
+
+        // 为了增加阴影添加一个点光源
+        var spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.position.set(-4000, 6000, -1000);
+        spotLight.castShadow = true;
+        scene.add(spotLight);
+
+        // add the output of the renderer to the html element
+        $("#WebGL-output").append(renderer.domElement);
+
+        // call the render function
+        var step = 0;
+
+        render();
+	
+		//监听窗口时间使其自适应
+		window.addEventListener( 'resize', onWindowResize, false );
+		window.addEventListener( 'mousemove', onDocumentMouseMove, false );
+		
+        function render() {
+            mesh1.position.x=boxX;
+            mesh1.position.y=boxZ;
+            mesh1.position.z=boxY;
+            requestAnimationFrame(render);
+            renderer.render(scene, camera);
+
+        } 
+		//窗口监听事件
+		function onWindowResize( event ) {
+			SCREEN_WIDTH = window.innerWidth;
+			SCREEN_HEIGHT = window.innerHeight;
+			renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+			camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+			camera.updateProjectionMatrix();
+			cameraCube.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+			cameraCube.updateProjectionMatrix();
+
+		}
+		//鼠标监听事件
+		function onDocumentMouseMove(event) {
+			mouseX = ( event.clientX - windowHalfX );
+			mouseY = ( event.clientY - windowHalfY );
+		}
+function movebox(){
+          $.ajax({
+                        type: "get",
+                        url: "./data/x.txt",
+                        dataType: "text",
+                        async: true
+                    }).done(function (data) {
+                        boxX=data.replace()*25-37.5;//替换回车行成换行符
+                        //console.log(data.replace(/\r\n/ig,'</br>'));
+                    });
+                    $.ajax({
+                        type: "get",
+                        url: "./data/y.txt",
+                        dataType: "text",
+                        async: true
+                    }).done(function (data) {
+                        boxY=data.replace()*(-18.75)+72.5;//替换回车行成换行符
+                        //console.log(data.replace(/\r\n/ig,'</br>'));
+                    });
+                   $.ajax({
+                        type: "get",
+                        url: "./data/z.txt",
+                        dataType: "text",
+                        async: true
+                    }).done(function (data) {
+                        boxZ=data.replace();//替换回车行成换行符
+                        //console.log(data.replace(/\r\n/ig,'</br>'));
+                    });
+                    boxZ=42;
+    mesh1.position.set(boxX,boxZ,boxY);
+    setTimeout("movebox()",100);
+    car1x=car1x+100;
+}
+
+car1x=car2x=car3x=car1y=car2y=car3y=car1z=car2z=car3z=0;
+car1x=3000;
+car2x=2000;
+car3x=1000;
+
+
+
+
+movebox();
+
+</script>
+
+</body>
+</html>
